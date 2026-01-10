@@ -1,0 +1,32 @@
+# --- Python Specific ---
+venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# --- C++ Specific ---
+*.exe
+*.o
+*.obj
+*.out
+build/
+bin/
+.vscode/
+# Ignore all CSV data files
+*.csv
+data/*.csv
+
+# Ignore the virtual environment
+venv/
+
+# Ignore Jupyter backups
+.ipynb_checkpoints/
+# --- Large Data Files ---
+# We keep the script, but ignore the heavy raw data
+data/nvda_raw.csv
+# If you want to ignore all CSVs in the data folder:
+data/*.csv
+
+# --- System Files ---
+.DS_Store
+Thumbs.db
