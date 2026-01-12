@@ -2,7 +2,7 @@ import pandas as pd
 
 
 MARKET_OPEN = "09:30"
-MARKET_CLOSE = "16:00"
+MARKET_CLOSE = "15:30"
 
 
 def load_raw_data(csv_path: str) -> pd.DataFrame:
@@ -50,11 +50,14 @@ def enforce_continuity(df: pd.DataFrame) -> pd.DataFrame:
     df = df.reindex(continuous_index)
 
     ohlc = ["open", "high", "low", "close"]
+    df[ohlc] = df[ohlc].apply(pd.to_numeric, errors='coerce')
+    df[ohlc] = df[ohlc].replace(0, pd.NA)
     df[ohlc] = df[ohlc].ffill()
     df["volume"] = df["volume"].fillna(0)
+    df[ohlc] = df[ohlc].bfill()
 
-    df = df.bfill().infer_objects(copy=False)
     return df
+
 
 
 def clean_equity_data(csv_path: str) -> pd.DataFrame:
