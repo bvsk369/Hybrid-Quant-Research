@@ -11,14 +11,31 @@ def load_raw_data(csv_path: str) -> pd.DataFrame:
 
 
 def standardize_timestamp(df: pd.DataFrame) -> pd.DataFrame:
-    if "timestamp" in df.columns:
+    """
+    Standardize the timestamp/index of the DataFrame.
+    Handles 3 cases:
+    1. Data already has DatetimeIndex (from loading with index_col=0)
+    2. Data has 'timestamp' column
+    3. Data has 'Datetime' column
+    """
+    # Case 1: Already has a DatetimeIndex (e.g., loaded with parse_dates=True, index_col=0)
+    if isinstance(df.index, pd.DatetimeIndex):
+        # Already good, just clean up
+        pass
+    # Case 2: Has 'timestamp' column
+    elif "timestamp" in df.columns:
         df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
         df = df.set_index("timestamp")
+    # Case 3: Has 'Datetime' column  
     elif "Datetime" in df.columns:
         df["Datetime"] = pd.to_datetime(df["Datetime"], errors="coerce")
         df = df.set_index("Datetime")
     else:
-        raise ValueError("No timestamp column found")
+        # Try to convert existing index to datetime
+        try:
+            df.index = pd.to_datetime(df.index, errors="coerce")
+        except Exception:
+            raise ValueError("No timestamp column found and could not parse index as datetime")
 
     df = df.sort_index()
     df = df[~df.index.duplicated(keep="first")]
@@ -54,14 +71,18 @@ def enforce_continuity(df: pd.DataFrame) -> pd.DataFrame:
     df[ohlc] = df[ohlc].replace(0, pd.NA)
     df[ohlc] = df[ohlc].ffill()
     df["volume"] = df["volume"].fillna(0)
-    df[ohlc] = df[ohlc].bfill()
+    # df[ohlc] = df[ohlc].bfill() # REMOVED: Future bias
+    df = df.dropna(subset=ohlc) # Remove initial rows that couldn't be ffilled
 
     return df
 
 
 
-def clean_equity_data(csv_path: str) -> pd.DataFrame:
-    df = load_raw_data(csv_path)
+def clean_equity_data(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Clean and standardize equity data.
+    Accepts a DataFrame (already loaded) instead of a path.
+    """
     df = standardize_timestamp(df)
     df = drop_invalid_rows(df)
     df = enforce_continuity(df)
