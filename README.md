@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="docs/equity_curve.png" alt="Equity Curve" width="800"/>
-</p>
+
 
 <h1 align="center">⚡ Hybrid Quantitative Trading Engine</h1>
 
@@ -229,5 +227,5 @@ This project is for educational and portfolio demonstration purposes.
 ---
 
 <p align="center">
-  <strong>Built with ❤️ for Quantitative Finance</strong>
+  <strong>Built with ❤️ for Quantitative Finance by BVSK</strong>
 </p>
