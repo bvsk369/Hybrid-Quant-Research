@@ -229,5 +229,5 @@ This project is for educational and portfolio demonstration purposes.
 ---
 
 <p align="center">
-  <strong>Built with ❤️ for Quantitative Finance</strong>
+  <strong>Built with ❤️ for Quantitative Finance by BVSK</strong>
 </p>
