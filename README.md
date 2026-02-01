@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="docs/equity_curve.png" alt="Equity Curve" width="800"/>
-</p>
+
 
 <h1 align="center">⚡ Hybrid Quantitative Trading Engine</h1>
 
